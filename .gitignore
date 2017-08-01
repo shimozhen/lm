@@ -1,0 +1,10 @@
+*.o
+*~
+*.so
+*.pyc
+__pycache__/
+.idea/
+summary/
+*.bak
+*.sh
+save/
