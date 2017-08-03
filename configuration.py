@@ -19,6 +19,8 @@ flags.DEFINE_bool("use_fp16", False, "Train using 16-bit floats instead of 32bit
 flags.DEFINE_boolean("first_run", False, "first run")
 flags.DEFINE_boolean("continue_run", False, "continue run")
 flags.DEFINE_boolean("shuffle_batch", False, "shffule batch or not")
+flags.DEFINE_boolean("trans_embedding", False, "trans embedding as w")
+flags.DEFINE_boolean("multiply_S", False, "w mulitiply S")
 
 # ------------config---------------
 # parameters to override config
@@ -52,6 +54,8 @@ class Setting:
         self.shuffle_batch = FLAGS.shuffle_batch
         self.config = FLAGS.config
         self.use_fp16 = FLAGS.use_fp16
+        self.trans_embedding = FLAGS.trans_embedding
+        self.multiply_S = FLAGS.multiply_S
 
 
 class SmallConfig(object):

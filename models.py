@@ -71,15 +71,18 @@ class PTBModel(object):
                 "softmax_w", [size, vocab_size], dtype=data_type)
         softmax_b = tf.get_variable("softmax_b", [vocab_size], dtype=data_type)
         # logits = tf.matmul(output, softmax_w) + softmax_b
-        embedding_trans = tf.transpose(embedding)
-        with tf.device("/cpu:0"):
-            self.output_mask = tf.get_variable(
-                "embedding_mask",
-                [size, vocab_size]
-            )
-        embedding_trans_S = tf.multiply(embedding_trans, self.output_mask)
-        logits = tf.matmul(output, embedding_trans_S) + softmax_b
+        if setting.trans_embedding:
+            softmax_w = tf.transpose(embedding)
 
+        if setting.multiply_S:
+            with tf.device("/cpu:0"):
+                self.output_mask = tf.get_variable(
+                    "embedding_mask",
+                    [size, vocab_size]
+                )
+            softmax_w = tf.multiply(softmax_w, self.output_mask)
+
+        logits = tf.matmul(output, softmax_w) + softmax_b
         # Reshape logits to be 3-D tensor for sequence loss
         logits = tf.reshape(logits, [batch_size, num_steps, vocab_size])
 
